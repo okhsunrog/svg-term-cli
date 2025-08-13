@@ -1,13 +1,20 @@
 {
-    "compilerOptions": {
-      "declaration": true,
-      "lib": ["es2015"],
-      "module": "commonjs",
-      "noImplicitAny": true,
-      "outDir": "lib/",
-      "pretty": true,
-      "strictNullChecks": true,
-      "target": "es2015"
-    }
-  }
+  "compilerOptions": {
+    "declaration": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "rootDir": "src",
+    "outDir": "lib/",
+    "pretty": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": []
+  },
+  "exclude": ["src/**/*.test.ts", "lib/**"]
+}
   

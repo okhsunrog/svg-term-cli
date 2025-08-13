@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import * as execa from "execa";
+import execa from "execa";
 import { GuessedTerminal, guessTerminal } from "guess-terminal";
 import * as macosAppConfig from "macos-app-config";
 import * as os from "os";
 import * as path from "path";
 import * as tempy from "tempy";
 import * as parsers from "term-schemes";
+import commandExists from "command-exists";
+import meow from "meow";
+import plist from "plist";
+import getStdin from "get-stdin";
+import svgTerm from "svg-term";
+import sander from "@marionebl/sander";
+import SVGO from "svgo";
 
-const commandExists = require("command-exists");
-const meow = require("meow");
-const plist = require("plist");
-const fetch = require("node-fetch");
-const getStdin = require("get-stdin");
-const { render } = require("svg-term");
-const sander = require("@marionebl/sander");
-const SVGO = require("svgo");
+const { render } = svgTerm as { render: (input: string, opts: any) => string };
 
 interface Guesses {
   [key: string]: string | null;
@@ -23,74 +23,16 @@ interface Guesses {
 
 interface SvgTermCli {
   flags: { [name: string]: any };
-  help: string;
   input: string[];
 }
 
-interface SvgTermError extends Error {
-  help(): string;
-}
+interface SvgTermError extends Error {}
 
 interface RecordOptions {
   title?: string;
 }
 
-withCli(
-  main,
-  `
-  Usage
-    $ svg-term [options]
-
-  Options
-    --at            timestamp of frame to render in ms [number]
-    --cast          asciinema cast id to download [string], required if no stdin provided [string]
-    --command       command to record [string]
-    --from          lower range of timeline to render in ms [number]
-    --height        height in lines [number]
-    --help          print this help [boolean]
-    --in            json file to use as input [string]
-    --no-cursor     disable cursor rendering [boolean]
-    --no-optimize   disable svgo optimization [boolean]
-    --out           output file, emits to stdout if omitted, [string]
-    --padding       distance between text and image bounds, [number]
-    --padding-x     distance between text and image bounds on x axis [number]
-    --padding-y     distance between text and image bounds on y axis [number]
-    --profile       terminal profile file to use, requires --term [string]
-    --term          terminal profile format [iterm2, xrdb, xresources, terminator, konsole, terminal, remmina, termite, tilda, xcfe], requires --profile [string]
-    --to            upper range of timeline to render in ms [number]
-    --width         width in columns [number]
-    --window        render with window decorations [boolean]
-
-  Examples
-    $ cat rec.json | svg-term
-    $ svg-term --cast 113643
-    $ svg-term --cast 113643 --out examples/parrot.svg
-`,
-  {
-    boolean: ["cursor", "help", "optimize", "version", "window"],
-    string: [
-      "at",
-      "cast",
-      "command",
-      "from",
-      "height",
-      "in",
-      "out",
-      "padding",
-      "padding-x",
-      "padding-y",
-      "profile",
-      "term",
-      "to",
-      "width"
-    ],
-    default: {
-      cursor: true,
-      optimize: true,
-      window: false
-    }
-  }
-);
+withCli(main);
 
 async function main(cli: SvgTermCli) {
   const error = cliError(cli);
@@ -173,10 +115,10 @@ async function main(cli: SvgTermCli) {
     throw error(`svg-term: ${shadowed.map(m => m.message).join("\n")}`);
   }
 
-  const term = cli.flags.hasOwnProperty("term")
+  const term = Object.prototype.hasOwnProperty.call(cli.flags, "term")
     ? cli.flags.term
     : guessTerminal();
-  const profile = cli.flags.hasOwnProperty("profile")
+  const profile = Object.prototype.hasOwnProperty.call(cli.flags, "profile")
     ? cli.flags.profile
     : guessProfile(term);
 
@@ -185,7 +127,7 @@ async function main(cli: SvgTermCli) {
     profile
   };
 
-  if (cli.flags.hasOwnProperty("term") || cli.flags.hasOwnProperty("profile")) {
+  if (Object.prototype.hasOwnProperty.call(cli.flags, "term") || Object.prototype.hasOwnProperty.call(cli.flags, "profile")) {
     const unsatisfied = ["term", "profile"].filter(n => !Boolean(guess[n]));
 
     if (unsatisfied.length > 0 && term !== "hyper") {
@@ -198,7 +140,7 @@ async function main(cli: SvgTermCli) {
   }
 
   const unknown = ensure(["term"], cli.flags, (name, val) => {
-    if (!cli.flags.hasOwnProperty(name)) {
+    if (!Object.prototype.hasOwnProperty.call(cli.flags, name)) {
       return null;
     }
 
@@ -270,10 +212,9 @@ function ensure(
     .map(e => e as Error);
 }
 
-function cliError(cli: SvgTermCli): (message: string) => SvgTermError {
+function cliError(_cli: SvgTermCli): (message: string) => SvgTermError {
   return message => {
     const err: any = new Error(message);
-    err.help = () => cli.help;
 
     return err;
   };
@@ -399,7 +340,7 @@ async function parseTheme(term: string, input: string): Promise<Result<parsers.T
 
     return [null, parser(content)];
   } catch (err) {
-    return [err, null];
+    return [err as Error, null];
   }
 }
 
@@ -420,7 +361,7 @@ async function extractTheme(term: string, name: string): Promise<Result<parsers.
 
       return [null, result];
     } catch (err) {
-      return [err, null]; 
+      return [err as Error, null]; 
     }
   }
 
@@ -453,7 +394,7 @@ async function extractTheme(term: string, name: string): Promise<Result<parsers.
       try {
         return [null, parser(plist.build(theme))];
       } catch (err) {
-        return [err, null];
+        return [err as Error, null];
       }
     default:
       return [null, null];
@@ -509,42 +450,36 @@ function toBoolean(input: any, fb: boolean): boolean {
   return input === true;
 }
 
-function withCli(
-  fn: (cli: SvgTermCli) => Promise<void>,
-  help: string = "",
-  options = {}
-): void {
-  const unknown: string[] = [];
-  const cli = meow(help, {
-    ...options,
-    unknown: (arg: string) => {
-      unknown.push(arg);
-
-      return false;
-    }
-  });
-
-  if (unknown.length > 0) {
-    const msg = chalk.red(`svg-term: remove unknown flags ${unknown.join(", ")}`);
-
-    console.error("\n", msg);
-    console.error(cli.help);
-    console.error("\n", msg);
-    process.exit(1);
-  }
+function withCli(fn: (cli: SvgTermCli) => Promise<void>): void {
+  const cli = meow({
+    importMeta: import.meta,
+    description: "Share terminal sessions as razor-sharp animated SVG everywhere",
+    autoHelp: true,
+    flags: {
+      at: { type: "string" },
+      cast: { type: "string" },
+      command: { type: "string" },
+      from: { type: "string" },
+      height: { type: "string" },
+      in: { type: "string" },
+      out: { type: "string" },
+      padding: { type: "string" },
+      paddingX: { type: "string" },
+      paddingY: { type: "string" },
+      profile: { type: "string" },
+      term: { type: "string" },
+      to: { type: "string" },
+      width: { type: "string" },
+      cursor: { type: "boolean", default: true },
+      optimize: { type: "boolean", default: true },
+      window: { type: "boolean", default: false },
+    },
+  }) as unknown as SvgTermCli;
 
   fn(cli).catch(err => {
-    const msg = chalk.red(err.message);
-
-    if (typeof err.help === "function") {
-      console.error("\n", msg);
-      console.error(err.help());
-      console.error("\n", msg);
-      process.exit(1);
-    }
-
-    setTimeout(() => {
-      throw err;
-    }, 0);
+    const message = err instanceof Error ? err.message : String(err);
+    const msg = chalk.red(message);
+    console.error("\n", msg);
+    process.exit(1);
   });
 }
