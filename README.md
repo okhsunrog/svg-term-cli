@@ -124,6 +124,30 @@ The image at the top of this README is an example. See how sharp the text looks,
 * [marionebl/svg-term](https://github.com/marionebl/svg-term) - Render asciicast to animated SVG
 * [marionebl/term-schemes](https://github.com/marionebl/term-schemes) - Parse and normalize common terminal emulator color schemes
 
+## Differences from upstream
+
+Compared to the original projects:
+
+- Upstream CLI: [marionebl/svg-term-cli](https://github.com/marionebl/svg-term-cli)
+- Upstream renderer: [marionebl/svg-term](https://github.com/marionebl/svg-term)
+- Maintained renderer fork used here: [okhsunrog/svg-term](https://github.com/okhsunrog/svg-term)
+
+Changes in this CLI:
+- Migrated to Bun for tooling (install/build/test) and TypeScript 5
+- Switched to ESM (NodeNext) and modern tsconfig
+- Replaced Jest + ts-jest with Bun’s test runner
+- Updated dependencies: `meow@^13`, `chalk@^5`, `execa@^9`, `svgo@^4`, `plist@^3`, `get-stdin@^9`, `tempy@^3`
+- Removed legacy/unused deps and old type packages
+- CLI help/flags updated; optimization flags documented; example SVGs refreshed
+
+Changes in the renderer fork (okhsunrog/svg-term):
+- Migrated to ESM and Bun tooling; added `types` entry
+- Updated React to 19 and Emotion to 11 (`@emotion/react`, `@emotion/styled`)
+- Fixed React key warnings in frame word rendering
+- Kept public `render(input, options)` API compatible with upstream
+
+These updates modernize the stack while preserving the core behavior and interface of the original tools.
+
 ## Gallery
 
 * [marionebl/commitlint](https://github.com/marionebl/commitlint)
