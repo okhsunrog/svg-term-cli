@@ -1,5 +1,5 @@
 {
-  "name": "svg-term-cli",
+  "name": "@okhsunrog/svg-term-cli",
   "version": "2.1.1",
   "description": "Share terminal sessions as razor-sharp animated SVG everywhere",
   "type": "module",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marionebl/svg-term-cli.git"
+    "url": "git+https://github.com/okhsunrog/svg-term-cli.git"
   },
   "keywords": [
     "svg",
@@ -26,9 +26,9 @@
   "author": "Mario Nebl <hello@mario-nebl.de>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/marionebl/svg-term-cli/issues"
+    "url": "https://github.com/okhsunrog/svg-term-cli/issues"
   },
-  "homepage": "https://github.com/marionebl/svg-term-cli#readme",
+  "homepage": "https://github.com/okhsunrog/svg-term-cli#readme",
   "dependencies": {
     "@marionebl/sander": "^0.6.1",
     "chalk": "^5.5.0",
