@@ -12,7 +12,7 @@
 * 🌐 Share asciicasts everywhere (sans JS)
 * 🤖 Style with common [color profiles](https://github.com/marionebl/term-schemes#supported-formats)
 
-> Maintenance note: This CLI is maintained and backed by an actively maintained fork of `svg-term`. The original upstream `svg-term` project by Marion Ebler appears unmaintained. See the original at [marionebl/svg-term](https://github.com/marionebl/svg-term) and the maintained fork at [okhsunrog/svg-term](https://github.com/okhsunrog/svg-term).
+> Maintenance note: This CLI is a maintained fork of [marionebl/svg-term-cli](https://github.com/marionebl/svg-term-cli). The underlying renderer uses a maintained fork of `svg-term`: [okhsunrog/svg-term](https://github.com/okhsunrog/svg-term).
 
 ## Install
 
