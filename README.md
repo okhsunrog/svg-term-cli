@@ -12,6 +12,8 @@
 * 🌐 Share asciicasts everywhere (sans JS)
 * 🤖 Style with common [color profiles](https://github.com/marionebl/term-schemes#supported-formats)
 
+> Maintenance note: This CLI is maintained and backed by an actively maintained fork of `svg-term`. The original upstream `svg-term` project by Marion Ebler appears unmaintained. See the original at [marionebl/svg-term](https://github.com/marionebl/svg-term) and the maintained fork at [okhsunrog/svg-term](https://github.com/okhsunrog/svg-term).
+
 ## Install
 
 1. Install asciinema via: https://asciinema.org/docs/installation
@@ -33,6 +35,29 @@ Generate the `parrot.svg` example from asciicast at <https://asciinema.org/a/113
 
 ```
 svg-term --cast=113643 --out examples/parrot.svg --window
+```
+
+### Optimization
+
+SVG output is optimized by default using SVGO. You can control optimization and size with the following flags:
+
+- `--no-optimize`: disable SVGO optimization (default is optimized)
+- `--window`: include window chrome; omit for smaller output
+- `--padding`, `--padding-x`, `--padding-y`: reduce padding to shrink the canvas, e.g. `--padding 0`
+- `--at <ms>`: render a single frame (static preview) instead of the full animation
+- `--from <ms>` / `--to <ms>`: trim the animation to a time range
+
+Examples:
+
+```sh
+# Optimized animated SVG (default optimization)
+svg-term --in rec.cast --out examples/archinstall-zfs.svg --window
+
+# Unoptimized output (bigger)
+svg-term --in rec.cast --out examples/unoptimized.svg --window --no-optimize
+
+# Smallest static preview: no window, no padding, single frame
+svg-term --in rec.cast --out examples/preview.svg --at 4500 --padding 0
 ```
 
 ## Development
@@ -107,4 +132,4 @@ The image at the top of this README is an example. See how sharp the text looks,
 
 ## License
 
-Copyright 2017. Released under the MIT license.
+Copyright 2025. Released under the MIT license.
