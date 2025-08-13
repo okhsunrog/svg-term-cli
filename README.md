@@ -17,11 +17,19 @@
 ## Install
 
 1. Install asciinema via: https://asciinema.org/docs/installation
-2. Install svg-term-cli:
+2. Install svg-term-cli (this maintained fork):
       ```sh
-      npm install -g svg-term-cli
-      # or using Bun
-      bunx --yes npm@latest i -g svg-term-cli
+      # npm (global)
+      npm install -g github:okhsunrog/svg-term-cli#chore/bun-migration
+
+      # Bun (global)
+      bun add -g github:okhsunrog/svg-term-cli#chore/bun-migration
+      ```
+
+      Note: If you previously installed the original package name globally, uninstall it first to avoid PATH conflicts:
+      ```sh
+      npm uninstall -g svg-term-cli || true
+      bun remove -g svg-term-cli || true
       ```
 
 ### Requirements
