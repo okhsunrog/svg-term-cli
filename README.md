@@ -6,7 +6,7 @@
 
 > Example generated with `svg-term --cast 113643 --out examples/parrot.svg --window --no-cursor --from=4500`
 
-# svg-term-cli
+# @okhsunrog/svg-term-cli
 
 * 💄 Render asciicast to animated SVG
 * 🌐 Share asciicasts everywhere (sans JS)
@@ -20,12 +20,12 @@
 2. Install @okhsunrog/svg-term-cli (this maintained fork):
       ```sh
       # npm (global)
-      npm install -g github:okhsunrog/svg-term-cli
+      npm install -g @okhsunrog/svg-term-cli
 
       # OR
 
       # Bun (global)
-      bun add -g github:okhsunrog/svg-term-cli
+      bun add -g @okhsunrog/svg-term-cli
       ```
 
       Note: If you previously installed the original package name globally, uninstall it first to avoid PATH conflicts:

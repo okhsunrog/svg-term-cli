@@ -29,6 +29,10 @@
     "url": "https://github.com/okhsunrog/svg-term-cli/issues"
   },
   "homepage": "https://github.com/okhsunrog/svg-term-cli#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {
     "@marionebl/sander": "^0.6.1",
     "chalk": "^5.5.0",
