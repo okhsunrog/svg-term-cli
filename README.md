@@ -18,7 +18,14 @@
 2. Install svg-term-cli:
       ```sh
       npm install -g svg-term-cli
+      # or using Bun
+      bunx --yes npm@latest i -g svg-term-cli
       ```
+
+### Requirements
+
+- Node.js >= 18 (ESM)
+- For local development/build: Bun >= 1.0
 
 ## Usage
 
@@ -26,6 +33,21 @@ Generate the `parrot.svg` example from asciicast at <https://asciinema.org/a/113
 
 ```
 svg-term --cast=113643 --out examples/parrot.svg --window
+```
+
+## Development
+
+This repo uses Bun for tooling.
+
+```sh
+# install deps
+bun install
+
+# type-check + build to lib/
+bun run build
+
+# run tests
+bun test
 ```
 
 ## Interface
