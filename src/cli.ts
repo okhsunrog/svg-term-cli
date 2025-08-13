@@ -1,21 +1,20 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import execa from "execa";
+import { execa } from "execa";
 import { GuessedTerminal, guessTerminal } from "guess-terminal";
 import * as macosAppConfig from "macos-app-config";
 import * as os from "os";
 import * as path from "path";
-import * as tempy from "tempy";
+import { temporaryFile } from "tempy";
 import * as parsers from "term-schemes";
 import commandExists from "command-exists";
 import meow from "meow";
 import plist from "plist";
 import getStdin from "get-stdin";
-import svgTerm from "svg-term";
+import { render } from "svg-term";
 import sander from "@marionebl/sander";
-import SVGO from "svgo";
+import { optimize } from "svgo";
 
-const { render } = svgTerm as { render: (input: string, opts: any) => string };
 
 interface Guesses {
   [key: string]: string | null;
@@ -165,31 +164,30 @@ async function main(cli: SvgTermCli) {
     throw error(`svg-term: ${err.message}`);
   }
 
+  const paddingX = toNumber(cli.flags.paddingX ?? cli.flags.padding) ?? 0;
+  const paddingY = toNumber(cli.flags.paddingY ?? cli.flags.padding) ?? 0;
+
   const svg = render(input, {
     at: toNumber(cli.flags.at),
     cursor: toBoolean(cli.flags.cursor, true),
     from: toNumber(cli.flags.from),
-    paddingX: toNumber(cli.flags.paddingX || cli.flags.padding),
-    paddingY: toNumber(cli.flags.paddingY || cli.flags.padding),
+    paddingX,
+    paddingY,
     to: toNumber(cli.flags.to),
     height: toNumber(cli.flags.height),
-    theme,
+    theme: theme ?? undefined as any,
     width: toNumber(cli.flags.width),
     window: toBoolean(cli.flags.window, false)
   });
 
-  const svgo = new SVGO({
-    plugins: [{ collapseGroups: false }]
-  });
-
   const optimized = toBoolean(cli.flags.optimize, true)
-    ? await svgo.optimize(svg)
-    : { data: svg };
+    ? optimize(svg, { plugins: [{ name: "preset-default", params: { overrides: { collapseGroups: false } } }] })
+    : { data: svg } as any;
 
   if (typeof cli.flags.out === "string") {
-    sander.writeFile(cli.flags.out, Buffer.from(optimized.data));
+    sander.writeFile(cli.flags.out, Buffer.from((optimized as any).data));
   } else {
-    process.stdout.write(optimized.data);
+    process.stdout.write((optimized as any).data);
   }
 }
 
@@ -405,17 +403,21 @@ async function record(
   cmd: string,
   options: RecordOptions = {}
 ): Promise<string> {
-  const tmp = tempy.file({ extension: ".json" });
+  const tmp = await temporaryFile({ extension: "json" });
 
-  const result = await execa("asciinema", [
-    "rec",
-    "-c",
-    cmd,
-    ...(options.title ? ["-t", options.title] : []),
-    tmp
-  ]);
+  const result = await execa(
+    "asciinema",
+    [
+      "rec",
+      "-c",
+      cmd,
+      ...(options.title ? ["-t", options.title] : []),
+      tmp,
+    ],
+    { stdout: "pipe", stderr: "pipe" }
+  );
 
-  if (result.code > 0) {
+  if ((result.exitCode ?? 0) > 0) {
     throw new Error(
       `recording "${cmd}" failed\n${result.stdout}\n${result.stderr}`
     );
@@ -424,13 +426,13 @@ async function record(
   return String(await sander.readFile(tmp));
 }
 
-function toNumber(input: string | null): number | null {
+function toNumber(input: string | null): number | undefined {
   if (!input) {
-    return null;
+    return undefined;
   }
   const candidate = parseInt(input, 10);
   if (isNaN(candidate)) {
-    return null;
+    return undefined;
   }
 
   return candidate;
