@@ -5,6 +5,7 @@
       "name": "svg-term-cli",
       "dependencies": {
         "@marionebl/sander": "^0.6.1",
+        "@okhsunrog/svg-term": "^1.0.0",
         "chalk": "^5.5.0",
         "command-exists": "^1.2.9",
         "execa": "^9.6.0",
@@ -13,7 +14,6 @@
         "macos-app-config": "^1.0.1",
         "meow": "^13.2.0",
         "plist": "^3.1.0",
-        "svg-term": "github:okhsunrog/svg-term#master",
         "svgo": "^4.0.0",
         "tempy": "^3.1.0",
         "term-schemes": "^1.2.1",
@@ -94,6 +94,8 @@
     "@marionebl/run-applescript": ["@marionebl/run-applescript@3.0.0", "", { "dependencies": { "execa": "^0.4.0" } }, ""],
 
     "@marionebl/sander": ["@marionebl/sander@0.6.1", "", { "dependencies": { "graceful-fs": "^4.1.3", "mkdirp": "^0.5.1", "rimraf": "^2.5.2" } }, ""],
+
+    "@okhsunrog/svg-term": ["@okhsunrog/svg-term@1.0.1", "", { "dependencies": { "@emotion/react": "^11.11.0", "@emotion/styled": "^11.11.0", "ansi-to-rgb": "^1.0.0", "load-asciicast": "^2.1.0", "lodash": "^4.17.21", "object-hash": "^3.0.0" }, "peerDependencies": { "react": ">=18 <20", "react-dom": ">=18 <20" } }, "sha512-Yd5+0RNI3a2uH7AmgFMn9eirFFldUVe+LEuAyFSDIlOPnUuHidhlgK6QoFK1f5ko788gOAoUwYwMuTdhQjiJ6A=="],
 
     "@sec-ant/readable-stream": ["@sec-ant/readable-stream@0.4.1", "", {}, "sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg=="],
 
@@ -348,8 +350,6 @@
     "stylis": ["stylis@4.2.0", "", {}, "sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw=="],
 
     "supports-preserve-symlinks-flag": ["supports-preserve-symlinks-flag@1.0.0", "", {}, "sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w=="],
-
-    "svg-term": ["svg-term@github:okhsunrog/svg-term#da71942", { "dependencies": { "@emotion/react": "^11.11.0", "@emotion/styled": "^11.11.0", "ansi-to-rgb": "^1.0.0", "load-asciicast": "^2.1.0", "lodash": "^4.17.21", "object-hash": "^3.0.0", "react": "^19.0.0", "react-dom": "^19.0.0" } }, "okhsunrog-svg-term-da71942"],
 
     "svgo": ["svgo@4.0.0", "", { "dependencies": { "commander": "^11.1.0", "css-select": "^5.1.0", "css-tree": "^3.0.1", "css-what": "^6.1.0", "csso": "^5.0.5", "picocolors": "^1.1.1", "sax": "^1.4.1" }, "bin": "./bin/svgo.js" }, "sha512-VvrHQ+9uniE+Mvx3+C9IEe/lWasXCU0nXMY2kZeLrHNICuRiC8uMPyM14UEaMOFA5mhyQqEkB02VoQ16n3DLaw=="],
 

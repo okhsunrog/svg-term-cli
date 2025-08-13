@@ -11,7 +11,7 @@ import commandExists from "command-exists";
 import meow from "meow";
 import plist from "plist";
 import getStdin from "get-stdin";
-import { render } from "svg-term";
+import { render } from "@okhsunrog/svg-term";
 import sander from "@marionebl/sander";
 import { optimize } from "svgo";
 

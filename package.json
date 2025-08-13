@@ -39,7 +39,7 @@
     "macos-app-config": "^1.0.1",
     "meow": "^13.2.0",
     "plist": "^3.1.0",
-    "svg-term": "github:okhsunrog/svg-term#master",
+    "@okhsunrog/svg-term": "^1.0.0",
     "svgo": "^4.0.0",
     "tempy": "^3.1.0",
     "term-schemes": "^1.2.1"
