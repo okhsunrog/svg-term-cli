@@ -39,15 +39,15 @@
     "macos-app-config": "^1.0.1",
     "meow": "^13.2.0",
     "plist": "^3.1.0",
-    "svg-term": "^2.0.3",
+    "svg-term": "link:svg-term",
     "svgo": "^4.0.0",
     "tempfile": "^5.0.0",
     "tempy": "^3.1.0",
     "term-schemes": "^1.2.1"
   },
   "devDependencies": {
-    "@emotion/core": "10",
-    "@emotion/styled": "10",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@types/command-exists": "^1.2.3",
     "@types/execa": "^2.0.2",
     "@types/get-stdin": "^7.0.0",
@@ -57,8 +57,8 @@
     "@types/tempy": "^0.3.0",
     "@xmldom/xmldom": "^0.9.8",
     "prettier": "^3.6.2",
-    "react": "16",
-    "react-dom": "16",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "typescript": "^5.9.2"
   }
 }
