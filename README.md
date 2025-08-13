@@ -22,6 +22,8 @@
       # npm (global)
       npm install -g github:okhsunrog/svg-term-cli#chore/bun-migration
 
+      # OR
+
       # Bun (global)
       bun add -g github:okhsunrog/svg-term-cli#chore/bun-migration
       ```
